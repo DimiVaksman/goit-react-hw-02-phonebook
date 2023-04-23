@@ -1,32 +1,40 @@
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
+import PropTypes from 'prop-types';
+import {FcAddDatabase} from "react-icons/fc";
+import * as yup from 'yup';
+import { Label,Text, Title, Form } from "./Phonebook.styled";
 
-const ContactsSchema = Yup.object().shape({
-  name: Yup.string().required('Required'),
-  number: Yup.number().required('Required'),
+const schema = yup.object().shape({
+  name: yup
+  .string()
+  .required(),
+  number: yup
+  .number()
+  .required()
 });
+
 
 export const Phonebook = ({ title, onSave }) => {
   return (
     <div>
-      <h2>{title}</h2>
+      <Title>{title}</Title>
       <Formik
         initialValues={{
           name: '',
-          number: 0,
+          number: '',
         }}
-        onSubmit={values => {
-          console.log(values);
+        onSubmit={(values, actions) => {
           onSave({
             ...values,
-            id: nanoid(),
-          })
+            id: nanoid()})
+            actions.resetForm()
         }}
+        validationSchema={schema}
       >
         <Form>
-          <label htmlFor="">
-            Name
+          <Label htmlFor="">
+            <Text>Name</Text>
             <Field
               type="text"
               name="name"
@@ -35,9 +43,9 @@ export const Phonebook = ({ title, onSave }) => {
               required
             />
             <ErrorMessage name="name" component="div" />
-          </label>
-          <label htmlFor="">
-            Number
+          </Label>
+          <Label htmlFor="">
+            <Text>Number</Text>
             <Field
               type="tel"
               name="number"
@@ -46,10 +54,15 @@ export const Phonebook = ({ title, onSave }) => {
               required
             />
             <ErrorMessage name="number" component="div" />
-          </label>
-          <button>Add Contact</button>
+          </Label>
+          <button ><FcAddDatabase size="16px"/></button>
         </Form>
       </Formik>
     </div>
   );
 };
+
+Phonebook.propType = {
+  onSubmit: PropTypes.func.isRequired,
+};
+
