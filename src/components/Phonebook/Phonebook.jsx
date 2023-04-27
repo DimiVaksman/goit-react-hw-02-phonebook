@@ -1,19 +1,14 @@
 import { Formik, Field, ErrorMessage } from 'formik';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import {FcAddDatabase} from "react-icons/fc";
+import { FcAddDatabase } from 'react-icons/fc';
 import * as yup from 'yup';
-import { Label,Text, Title, Form } from "./Phonebook.styled";
+import { Label, Text, Title, Form } from './Phonebook.styled';
 
 const schema = yup.object().shape({
-  name: yup
-  .string()
-  .required(),
-  number: yup
-  .number()
-  .required()
+  name: yup.string().required(),
+  number: yup.number().required(),
 });
-
 
 export const Phonebook = ({ title, onSave }) => {
   return (
@@ -27,8 +22,9 @@ export const Phonebook = ({ title, onSave }) => {
         onSubmit={(values, actions) => {
           onSave({
             ...values,
-            id: nanoid()})
-            actions.resetForm()
+            id: nanoid(),
+          });
+          actions.resetForm();
         }}
         validationSchema={schema}
       >
@@ -55,7 +51,9 @@ export const Phonebook = ({ title, onSave }) => {
             />
             <ErrorMessage name="number" component="div" />
           </Label>
-          <button ><FcAddDatabase size="16px"/></button>
+          <button>
+            <FcAddDatabase size="16px" />
+          </button>
         </Form>
       </Formik>
     </div>
@@ -65,4 +63,3 @@ export const Phonebook = ({ title, onSave }) => {
 Phonebook.propType = {
   onSubmit: PropTypes.func.isRequired,
 };
-
